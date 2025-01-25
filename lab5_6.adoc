@@ -14,7 +14,7 @@
 :figure-caption: Рисунок
 :table-caption: Таблица
 
-include:: titulnik.adoc[]
+include::titulnik.adoc[]
 == Добавление классов для программы
 
 
