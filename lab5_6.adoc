@@ -193,7 +193,7 @@ void ModeManager::UpdateModeManager() {
 }
 
 void ModeManager::SwitchModeManager() {
-    currentModeType = (currentModeType + 1) % sizeof(modes); 
+    currentModeType = (currentModeType + 1) % std::size(modes); 
         modes[currentModeType]->Init();
 }
 ----
@@ -206,7 +206,7 @@ void ModeManager::SwitchModeManager() {
 
 Создадим классы `IButton` и `Button`.
 
-В классе IButton определен метод isClick(), который должен быть реализован в наследуемых классах. Этот метод используется для проверки состояния кнопки на нажатие:
+В классе IButton объявлен метод isClick(), который должен быть реализован в наследуемых классах. Этот метод используется для проверки состояния кнопки на нажатие:
 
 [source, cpp]
 ----
@@ -232,7 +232,7 @@ public:
 template<typename TPort, int pinNumber>
 class Button : public IButton {
 public:
-      bool onClick() override
+      bool isClick() override
       {
          return (TPort::IDR::Get() & (1 << pinNumber)) == 0;
       }
@@ -268,7 +268,7 @@ std::uint32_t SystemCoreClock = 16'000'000U;
 extern "C" 
 int __low_level_init(void)
 
-  RCC::CR::HSION::On::Set();
+
   while (RCC::CR::HSIRDY::NotReady::IsSet())
   {
 
@@ -332,7 +332,7 @@ f = f(hse) × (PLLN / PLLM) /PLLP​
 
 Для получения частоты 
 
-f = 13.666МГц, например, выберем: PLLM = 10; PLLN = 137; PLLP = 8.
+f = 13.666МГц, например, выберем: PLLM = 10; PLLN = 8; PLLP = 8.
 
  Проверка f = 137 × 8 / 10 / 8 = 13.7 МГц.
 
@@ -349,6 +349,8 @@ extern "C"
 int __low_level_init(void){
   
   RCC::CR::HSEON::On::Set();
+
+  
 
 
   RCC::PLLCFGR::PLLSRC::HseSource::Set();
